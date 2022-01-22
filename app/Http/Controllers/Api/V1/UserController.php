@@ -5,25 +5,21 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\V1\User\UserRegisterRequest;
+use App\Http\Requests\Api\V1\User\UserLoginRequest;
 use App\Models\User;
 use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public $roleRepository;
+    public $userRepository;
 
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct(RoleRepository $roleRepository, UserRepository $userRepository)
     {
         $this->roleRepository = $roleRepository;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -63,7 +59,7 @@ class UserController extends Controller
 
         return response([
             'status' => true 
-        ], 201);
+        ], 204);
     }
 
     /**
@@ -89,9 +85,44 @@ class UserController extends Controller
         //
     }
 
-    public function login()
+    public function login(UserLoginRequest $request)
     {
+        // Ищем пользователя по email
+        $user = $this->userRepository->getUserByEmailAndPassword($request->email);
 
+        if (!empty($user)) {
+            if (Hash::check($request->password, $user->password)) {
+                // Добавляем аватарку в вывод(если она есть)
+                $user->getMedia();
+                if (count($user['media'])) {
+                    $user['user_avatar_url'] = $user['media'][0]->getUrl();
+                } else {
+                    $user['user_avatar_url'] = null;
+                }
+
+                // Удаляем лишние данные от автарки
+                unset($user['media']);
+                
+                // Возвращаем пользователя
+                return response([
+                    'status' => true,
+                    'user'   => $user
+                ], 401);
+            } else {
+                // Если пользователь найден но пароль не совпадает
+                return response([
+                    'status'  => false,
+                    'message' => 'Неверный пароль'
+                ], 401);
+            }
+        } else {
+
+            // Если пользователь не найден
+            return response([
+                'status'  => false,
+                'message' => 'Пользователь не найден'
+            ], 404);
+        }
     }
     /**
      * Remove the specified resource from storage.

@@ -1,0 +1,63 @@
+openapi: "3.0.0"
+info: 
+  title: API тестового задания
+  version: "1.0"
+components:
+  schemas:
+    Register:
+      type: object
+      description: "Обьект для регистарации пользователя"
+      required:
+        - first_name
+        - email
+        - role_id
+        - password 
+      properties:
+        first_name:
+          description: "Имя пользователя, максимальная длина 10 символов"
+          type: string 
+        last_name:
+          description: "Фамилия пользователя, максимальная длина 20 символов"
+          type: string
+        email:
+          description: "Email-адрес"
+          type: string 
+        role_id:
+          description: "ID роли, 1 - пользователь 2 - администратор"
+          type: number
+        password:
+          description: "Пароль, минимальная длина 6 символов, максимальная длина 14 символов"
+          type: string
+        user_avatar:
+          description: "Аватарка пользователя"
+          type: string
+          format: binary
+paths:
+  /api/v1/register:
+    description: "Регистрация нового пользователя"
+    post:
+      summary: "Регистрация пользователя"
+      description: "Регистарация пользователя"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+
+      responses:
+        "204":
+          description: "Успешного создания"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: "Статус"
+                example:
+                  status: true
+        "400":
+          description: "В запросе нет обязательных полей, или не соблюдены правила для некоторох полей"
+ 
+
+                      
