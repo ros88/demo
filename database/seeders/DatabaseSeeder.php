@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Article;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,9 @@ class DatabaseSeeder extends Seeder
 
         // Вызов фабрики для создания 20 пользователей(пароль для всех til123456)
         User::factory()->count(20)->create();
+
+        // Вызов фабрики для создания 20 статей
+        Article::Factory()->count(20)->create();
 
         // Массив ссылок на картинки
         $avatarsUrl = [
