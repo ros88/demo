@@ -8,6 +8,7 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\ThemeRepository;
 use App\Http\Requests\Api\V1\Article\ArticleStoreRequest;
 use App\Models\Article;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -92,6 +93,13 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::findOrFail($id);
+        Gate::authorize('delete', $article);
+
+        $article->delete();
+
+        return response([
+            'status' => true 
+        ]);
     }
 }
