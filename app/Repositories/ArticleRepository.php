@@ -43,4 +43,38 @@ class ArticleRepository implements ArticleRepositoryInterface {
 
         return $articles;
     }
+
+    public function getArticleById(int $article_id)
+    {
+        $article = Article::where('id', $article_id)->with(['themes', 
+            'author' => function($query) {
+                $query->select(['id', 'first_name', 'last_name']);
+            }
+        ])
+        ->first();
+        
+        if (!empty($article)) {
+            $article->getMedia();
+            if (count($article['media'])) {
+                $article['main_image_url'] = $article['media'][0]->getUrl();
+            } else {
+                $article['main_image_url'] = null;
+            }
+
+            if (!empty($article['author'])) {
+                $article['author']->getMedia();
+
+                if (count($article['author']['media'])) {
+                    $article['author']['usr_avatar_url'] = $article['author']['media'][0]->getUrl();
+                } else {
+                    $article['author']['usr_avatar_url'] = null;
+                }
+                unset($article['author']['media']);
+            }
+
+            unset($article['media']);
+        }
+
+        return $article;
+    }
 }

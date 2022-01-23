@@ -40,6 +40,11 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(Theme::class, ArticleTheme::class);
     }
 
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
      // Создаем медиа-коллецию для главной картинки  
     public function registerMediaCollections(): void

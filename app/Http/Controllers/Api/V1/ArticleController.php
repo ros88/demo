@@ -82,7 +82,15 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = $this->articleRepository->getArticleById($id);
+
+        if (!empty($article)) {
+            return response($article);
+        } else {
+            return response([
+                'status' => false 
+            ], 404);
+        }
     }
 
     /**
