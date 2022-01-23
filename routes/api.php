@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\ArticleController;
+use App\Http\Controllers\Api\V1\CommentController;
+use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +22,21 @@ use App\Http\Controllers\Api\V1\UserController;
 Route::prefix('/v1')->group(function() {
     Route::post('/register', [UserController::class, 'store']);
     Route::post('/login', [UserController::class, 'login']);
+    
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('/articles', ArticleController::class);
+        Route::get('/comments/{article_id}', [CommentController::class, 'index']);
+        Route::post('/comments', [CommentController::class, 'store']);
+        Route::delete('/comments/{comment_id}', [CommentController::class, 'destroy']);
+    });
+
+    Route::get('/unauthorized', function() {
+        return response([
+            'message' => 'unauthorized'
+        ], 401);
+    })->name('unauthorized');
+
+    Route::get('/test', function() {
+        return Article::with(['themes'])->get();
+    });
 });

@@ -41,7 +41,6 @@ class UserController extends Controller
             ], 400);
         }
 
-
         // Создаем нового пользователя
         $newUser = new User();
         $newUser->first_name = $request->first_name;
@@ -62,29 +61,6 @@ class UserController extends Controller
         ], 204);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function login(UserLoginRequest $request)
     {
         // Ищем пользователя по email
@@ -102,11 +78,15 @@ class UserController extends Controller
 
                 // Удаляем лишние данные от автарки
                 unset($user['media']);
+
+                // Создаем токен
+                $token = $user->createToken('Sanctum token')->plainTextToken;
                 
                 // Возвращаем пользователя
                 return response([
                     'status' => true,
-                    'user'   => $user
+                    'user'   => $user,
+                    'token'  => $token,
                 ], 401);
             } else {
                 // Если пользователь найден но пароль не совпадает

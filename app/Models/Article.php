@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Article extends Model
+class Article extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -31,4 +34,28 @@ class Article extends Model
     ];
 
     public $timestamps = false;
+
+    public function themes()
+    {
+        return $this->belongsToMany(Theme::class, ArticleTheme::class);
+    }
+
+
+     // Создаем медиа-коллецию для главной картинки  
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('main_image')
+        ->acceptsMimeTypes(['image/jpeg', 'image/png'])
+        ->onlyKeepLatest(1);
+    }
+    
+    
+    // Определение медиа-конверсий
+    public function registerMediaConversions(Media $media = null): void
+    {
+        // Конверсия картинки пользователя 50X50
+        $this->addMediaConversion('thumb50')
+            ->width(200)
+            ->height(200);
+    }
 }
