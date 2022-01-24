@@ -17,6 +17,7 @@ class CreateArticlesRatingTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('article_id');
+            $table->tinyInteger('mark');
 
             // foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');

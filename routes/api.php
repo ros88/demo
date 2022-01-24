@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\CommentController;
+use App\Http\Controllers\Api\V1\RatingController;
 use App\Models\Article;
 
 /*
@@ -28,6 +29,7 @@ Route::prefix('/v1')->group(function() {
         Route::post('/articles/{article_id}', [ArticleController::class, 'update']);
         Route::apiResource('/comments', CommentController::class, ['only' => ['index', 'show', 'store']]);
         Route::post('/comments', [CommentController::class, 'store']);
+        Route::post('/create_rating', [RatingController::class, 'store']);
         Route::delete('/comments/{comment_id}', [CommentController::class, 'destroy']);
     });
 
