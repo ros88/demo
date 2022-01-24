@@ -74,6 +74,33 @@ class ArticleController extends Controller
         ], 201);
     }
 
+
+        /**
+     * Update the given article.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+     
+        $article = Article::findOrFail($id);
+        Gate::authorize('delete', $article);
+
+        $article->update($request->only(['content']));
+        
+        if ($request->hasFile('main_image')) {
+            $article->addMedia($request->file('main_image'))
+                    ->toMediaCollection('main_image');
+        }
+
+        return response([
+            'status' => true,
+            'article_id' => $article->id
+        ], 201);
+    }
+
     /**
      * Display the specified resource.
      *

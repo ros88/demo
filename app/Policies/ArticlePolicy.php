@@ -53,7 +53,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        //
+        return $user->role_id == 2;
     }
 
     /**

@@ -24,7 +24,8 @@ Route::prefix('/v1')->group(function() {
     Route::post('/login', [UserController::class, 'login']);
     
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('/articles', ArticleController::class);
+        Route::apiResource('/articles', ArticleController::class, ['except' => 'update']);
+        Route::post('/articles/{article_id}', [ArticleController::class, 'update']);
         Route::get('/comments/{article_id}', [CommentController::class, 'index']);
         Route::post('/comments', [CommentController::class, 'store']);
         Route::delete('/comments/{comment_id}', [CommentController::class, 'destroy']);
