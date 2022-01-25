@@ -65,4 +65,9 @@ class User extends Authenticatable implements HasMedia
               ->width(50)
               ->height(50);
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

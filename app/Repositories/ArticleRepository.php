@@ -21,26 +21,44 @@ class ArticleRepository implements ArticleRepositoryInterface {
                     $getCoulumns[] = $item;
                 }
             }
-        }
 
-        $articles = Article::select(['id', 'title', 'author_id', 'publish_at'])
-        ->when(!$request->filled('sort_by'), function($query) {
-            $query->orderBy('publish_at', 'DESC');
-        })
-
-        ->paginate($count);
-
-        $articles->each(function($article) {
-            $article->getMedia();
-            if (count($article['media'])) {
-                $article['main_image_url'] = $article['media'][0]->getUrl();
-            } else {
-                $article['main_image_url'] = null;
+            if (empty($getCoulumns)) {
+                $getCoulumns[] = 'id';
             }
 
-            unset($article['media']);
-        });
+            $articles = Article::select($getCoulumns)->paginate($count);
+        } else {
+            $articles = Article::select(['id', 'title', 'author_id', 'publish_at'])
+            ->when(!$request->filled('sort_by'), function($query) {
+                $query->orderBy('publish_at', 'DESC');
+            })
+            ->when($request->sort_by == 'rating', function($query) {
+                $query->withCount('good_rating')->orderByDesc('good_rating_count');
+            })
+            ->when($request->filled('expand') && $request->expand == 'themes', function($query) {
+                $query->with(['themes']);
+            })
+            ->when($request->filled('themes_id'), function($query) use ($request) {
+                $themesArr = explode(',', $request->themes_id);
+                $query->whereHas('themes', function($query) use ($themesArr) {
+                    $query->whereIn('themes.id', $themesArr);
+                });
+            })
+            ->paginate($count);
+    
+            $articles->each(function($article) {
+                $article->getMedia();
+                if (count($article['media'])) {
+                    $article['main_image_url'] = $article['media'][0]->getUrl();
+                } else {
+                    $article['main_image_url'] = null;
+                }
+    
+                unset($article['media']);
+            });    
+        }
 
+ 
         return $articles;
     }
 

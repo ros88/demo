@@ -84,11 +84,10 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-     
         $article = Article::findOrFail($id);
         Gate::authorize('delete', $article);
 
-        $article->update($request->only(['content']));
+        $article->update($request->only(['content', 'title']));
         
         if ($request->hasFile('main_image')) {
             $article->addMedia($request->file('main_image'))

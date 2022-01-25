@@ -57,8 +57,9 @@ class UserController extends Controller
         }
 
         return response([
-            'status' => true 
-        ], 204);
+            'status' => true,
+            'user_id' => $newUser->id
+        ], 201);
     }
 
     public function login(UserLoginRequest $request)
@@ -87,7 +88,7 @@ class UserController extends Controller
                     'status' => true,
                     'user'   => $user,
                     'token'  => $token,
-                ], 401);
+                ], 200);
             } else {
                 // Если пользователь найден но пароль не совпадает
                 return response([

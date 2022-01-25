@@ -45,7 +45,16 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function good_rating()
+    {
+        return $this->hasMany(ArticleRating::class)->where('mark', 1);
+    }
 
+    public function bad_rating()
+    {
+        return $this->hasMany(ArticleRating::class)->where('mark', -1);
+    }
+     
      // Создаем медиа-коллецию для главной картинки  
     public function registerMediaCollections(): void
     {

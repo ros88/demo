@@ -7,6 +7,6 @@ use App\Models\User;
 class UserRepository implements UserRepositoryInterface {
     public function getUserByEmailAndPassword(string $email) 
     {
-        return User::where('email', $email)->first();
+        return User::where('email', $email)->with(['role'])->first();
     }
 }
