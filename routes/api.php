@@ -39,7 +39,8 @@ Route::prefix('/v1')->group(function() {
         return response([
             'message' => 'unauthorized'
         ], 401);
-    })->name('unauthorized');
+    })
+    ->name('unauthorized');
 
     Route::get('/test', function() {
         return Article::with(['good_rating'])->get();
