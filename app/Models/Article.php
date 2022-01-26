@@ -12,6 +12,7 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, QueryCacheable;
+    protected $cacheFor = 180; 
 
     /**
      * The attributes that are mass assignable.

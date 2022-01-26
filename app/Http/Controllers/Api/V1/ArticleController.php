@@ -9,6 +9,7 @@ use App\Repositories\ThemeRepository;
 use App\Http\Requests\Api\V1\Article\ArticleStoreRequest;
 use App\Models\Article;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class ArticleController extends Controller
 {
@@ -83,15 +84,21 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {     
         $article = Article::findOrFail($id);
         Gate::authorize('delete', $article);
 
         $article->update($request->only(['content', 'title']));
+
         
         if ($request->hasFile('main_image')) {
             $article->addMedia($request->file('main_image'))
                     ->toMediaCollection('main_image');
+        }
+
+        if (env('APP_DEBUG') == true) {
+            $message = 'udpate article, article id = ' . $article->id . ' updated fields - ' . implode(', ', array_keys($request->all()));
+            LOG::channel('update_article')->info($message);
         }
 
         return response([
