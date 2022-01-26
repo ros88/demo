@@ -1,0 +1,590 @@
+{
+	"info": {
+		"_postman_id": "3934d505-94a0-46b5-8682-cb066ee1cea0",
+		"name": "News - Тестовое задание",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "News - Регистрация",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "Иванs",
+							"description": "Имя пользователя",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "xzczxc@gmai.com",
+							"description": "Email-пользователя",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "til12345",
+							"description": "Пароль пользователя",
+							"type": "text"
+						},
+						{
+							"key": "role_id",
+							"value": "1",
+							"description": "ID роли(1 - пользователь, 2 - администратор)",
+							"type": "text"
+						},
+						{
+							"key": "user_avatar",
+							"description": "Аватарка пользователя(необязательное поле)",
+							"type": "file",
+							"src": "/C:/Users/Oleg/Desktop/Новая папка/191010-japan-stalker-mc-1121_06b4c20bbf96a51dc8663f334404a899.fit-760w.jpg"
+						},
+						{
+							"key": "last_name",
+							"value": "ивнов",
+							"description": "Фамилия(необязательное поле)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Вход(логин)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "xzczxc@gmai.com",
+							"description": "Email-адрес(логин)",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "til12345",
+							"description": "Пароль",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Список статей",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|dVc2ucxSJvWtSmP1BgQOmAJyZwwjw0Oh94RDcEF3",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/articles?count=2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"articles"
+					],
+					"query": [
+						{
+							"key": "sort_by",
+							"value": "rating",
+							"description": "Сортировка по популяности(необязательное поле)",
+							"disabled": true
+						},
+						{
+							"key": "fields",
+							"value": "id",
+							"description": "Получить конкретные поля(необязательное поле, если этот параметр включон в запрос другая сортиовка не работает)",
+							"disabled": true
+						},
+						{
+							"key": "expand",
+							"value": "themes",
+							"description": "Добавить в вывод данные из связанной таблицы(темы статьи)(необязательное поле)",
+							"disabled": true
+						},
+						{
+							"key": "count",
+							"value": "2",
+							"description": "Пагинация(необязательное поле)"
+						},
+						{
+							"key": "themes_id",
+							"value": "12",
+							"description": "Вернуть статьи по определенным темам",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Создание статьи",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|EaQVsopq9KoGoEwb8LTakFr3u4NAfLwILovusFaP",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Во́лга — река в европейской части России.",
+							"description": "Заголовок",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "Во́лга — река в европейской части России. Одна из крупнейших рек на Земле и самая большая по водности, площади бассейна и длине в Европе, а также крупнейшая в мире река, впадающая в бессточный водоём. Длина реки составляет 3530 км, а площадь водосборного бассейна — 1360 тыс. км². Годовой сток составляет 254 км³.",
+							"description": "Текст статьи",
+							"type": "text"
+						},
+						{
+							"key": "themes_id",
+							"value": "13423233",
+							"description": "ID тем",
+							"type": "text"
+						},
+						{
+							"key": "main_image",
+							"description": "Картинка статьи(необязательное поле)",
+							"type": "file",
+							"src": "/C:/Users/Oleg/Desktop/Новая папка/af8d63a477078732b79ff9d9fc60873f.jpg",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/articles",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Удаление статьи",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/articles/20\n\n",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"articles",
+						"20\n\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Вывод отдельной статьи",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/articles/5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"articles",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Обновление статьи",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "sd",
+							"description": "Контент статьи",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "main_image",
+							"description": "Картинка статьи",
+							"type": "file",
+							"src": "/C:/Users/Oleg/Desktop/Новая папка/photo-1541963463532-d68292c34b19.jpg"
+						},
+						{
+							"key": "title",
+							"value": "asdasd",
+							"description": "Заголовок",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/articles/5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"articles",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Список комментариев к статье",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/comments?article_id=1&count=12",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "article_id",
+							"value": "1",
+							"description": "ID статьи"
+						},
+						{
+							"key": "count",
+							"value": "12",
+							"description": "Пагинация"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Создание комментария",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "text",
+							"value": "test",
+							"description": "Тест комментария",
+							"type": "text"
+						},
+						{
+							"key": "article_id",
+							"value": "1",
+							"description": "ID статьи",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Вывод отдельного комментрия",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/comments/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"comments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Поставить оценку статье",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|oLXCamiGvuMZXMuBt08cTrOcGSMVBhSKmEkZj8rH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "article_id",
+							"value": "1",
+							"description": "ID статьи",
+							"type": "text"
+						},
+						{
+							"key": "mark",
+							"value": "1",
+							"description": "Оценка(1 - лайк, -1 - дизлайк)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/create_rating",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"create_rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "News - Список тем",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "3|cQM8gsYTY9xmqjfbW1Gwstvug6jLSIKmh4dXKOTb",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/themes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"themes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
